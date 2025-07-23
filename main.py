@@ -35,7 +35,7 @@ def process_frame(frame):
     pil_image = Image.fromarray(rgb_frame)
     try:
         response = model.generate_content([
-            "Describe the scene for a blind person. Mention key things like STOP signs, people, or traffic lights.",
+            "Provide a short, clear, and concise description of this scene (1–2 sentences) for a blind person. Focus only on key visual elements or signs like STOP signs, vehicles, people, or traffic lights.",
             pil_image
         ])
         return response.text.strip()
