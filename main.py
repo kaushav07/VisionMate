@@ -1,43 +1,48 @@
 import cv2
-import pyttsx3
-import google.generativeai as genai
 import numpy as np
-import time
 import threading
+import os
 import speech_recognition as sr
 from PIL import Image
-import io
+from dotenv import load_dotenv
+import socket
+import google.generativeai as genai
 
-# Initialize TTS engine
-engine = pyttsx3.init()
+from tts_utils import speak
+from config import TTS_ENGINE, IP_WEBCAM_URL
 
-def speak(text):
-    print("Speaking:", text)
-    engine.say(text)
-    engine.runAndWait()
-
-# Initialize Gemini
-genai.configure(api_key="API KEY")
+# Load Gemini API key from .env
+load_dotenv()
+api_key = os.getenv("API_KEY")
+genai.configure(api_key=api_key)
 model = genai.GenerativeModel(model_name="gemini-1.5-flash")
 
-# IP Webcam URL (replace with your phone's IP)
-url = 'http://10.134.93.78:8080/video'  # Update IP
-cap = cv2.VideoCapture(url)
+def is_connected():
+    try:
+        socket.create_connection(("www.google.com", 80), timeout=2)
+        return True
+    except OSError:
+        return False
+
+# Camera: IP Webcam (phone camera)
+cap = cv2.VideoCapture(IP_WEBCAM_URL)
 
 status = "Press 's' or say 'scan' to scan surroundings..."
-scan_triggered = False  # Flag for voice activation
+scan_triggered = False
 
 def process_frame(frame):
     rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     pil_image = Image.fromarray(rgb_frame)
-    response = model.generate_content([
-        "Provide a short, clear, and concise description of this scene (1–2 sentences) for a blind person. Focus only on key visual elements or signs like STOP signs, vehicles, people, or traffic lights.",
-        pil_image
-    ])
-    description = response.text.strip()
-    return description
+    try:
+        response = model.generate_content([
+            "Describe the scene for a blind person. Mention key things like STOP signs, people, or traffic lights.",
+            pil_image
+        ])
+        return response.text.strip()
+    except Exception as e:
+        print(f"[Gemini Error] {e}")
+        return "Unable to analyze surroundings due to internet issue."
 
-# Voice recognition function
 def listen_for_scan():
     global scan_triggered
     recognizer = sr.Recognizer()
@@ -50,44 +55,38 @@ def listen_for_scan():
     while True:
         with mic as source:
             try:
-                print("Listening...")
                 audio = recognizer.listen(source, timeout=3, phrase_time_limit=5)
                 command = recognizer.recognize_google(audio).lower()
-                print(f"Recognized: {command}")
                 if "scan" in command:
-                    print("Voice command 'scan' detected.")
                     scan_triggered = True
-            except sr.WaitTimeoutError:
-                print("Listening timed out, retrying...")
-            except sr.UnknownValueError:
-                print("Could not understand audio.")
-            except sr.RequestError as e:
-                print(f"Speech recognition service error: {e}")
+            except (sr.WaitTimeoutError, sr.UnknownValueError, sr.RequestError):
+                pass
 
-# Start voice recognition in a separate thread
+# Start voice recognition in background
 voice_thread = threading.Thread(target=listen_for_scan, daemon=True)
 voice_thread.start()
+
+if not is_connected():
+    speak("Warning. You are offline. Scene analysis will not work.")
 
 while True:
     ret, frame = cap.read()
     if not ret:
-        print("Camera error.")
+        print("Camera error. Check your IP Webcam app and Wi-Fi.")
         continue
 
-    cv2.putText(frame, status, (20, 50), cv2.FONT_HERSHEY_SIMPLEX,
-                0.8, (0, 255, 0), 2)
-
+    cv2.putText(frame, status, (20, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
     cv2.imshow("Blind Assist Tool", frame)
     key = cv2.waitKey(1) & 0xFF
 
     if key == ord('s') or scan_triggered:
-        scan_triggered = False  # reset flag
+        scan_triggered = False
         status = "Analyzing surroundings..."
         speak("Analyzing surroundings")
         desc = process_frame(frame)
         speak(desc)
 
-        # Detect important keywords
+        # Alert on specific signs
         if "stop sign" in desc.lower() or "stop" in desc.lower():
             speak("Stop! There's a stop sign.")
         elif "red light" in desc.lower():

@@ -1,7 +1,10 @@
 opencv-python
 pyttsx3
+gTTS
 google-generativeai
 numpy
 Pillow
 SpeechRecognition
 pyaudio
+playsound
+python-dotenv
