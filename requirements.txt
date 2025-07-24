@@ -1,6 +1,6 @@
 opencv-python
 pyttsx3
-google-generativeai
+google-genai>=1.27.0
 numpy
 Pillow
 SpeechRecognition
