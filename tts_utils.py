@@ -1,9 +1,13 @@
 """
-TTS utility module to support multiple text-to-speech engines:
-- gTTS (online, clearer voice)
-- pyttsx3 (offline fallback)
+tts_utils.py
 
-Reads config from config.py
+Handles Text-to-Speech functionality for the Blind Assist Tool.
+Supports both gTTS (online) and pyttsx3 (offline) engines with fallback.
+
+Usage:
+- Import the speak() function and call speak("your message")
+- Engine can be set in config.py using TTS_ENGINE = "gTTS" or "pyttsx3"
+
 """
 
 from config import TTS_ENGINE
