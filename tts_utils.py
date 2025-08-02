@@ -13,7 +13,8 @@ Usage:
 from config import TTS_ENGINE
 import pyttsx3
 from gtts import gTTS
-from playsound import playsound
+from pydub import AudioSegment
+import winsound
 import tempfile
 import os
 
@@ -34,10 +35,15 @@ def speak(text):
     elif TTS_ENGINE == "gTTS":
         try:
             tts = gTTS(text=text, lang='en')
-            with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as tmp:
-                tts.save(tmp.name)
-                playsound(tmp.name)
-            os.remove(tmp.name)
+            with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as tmp_mp3:
+                tts.save(tmp_mp3.name)
+                # Convert mp3 to wav
+                sound = AudioSegment.from_mp3(tmp_mp3.name)
+                tmp_wav = tmp_mp3.name.replace('.mp3', '.wav')
+                sound.export(tmp_wav, format="wav")
+                winsound.PlaySound(tmp_wav, winsound.SND_FILENAME)
+            os.remove(tmp_mp3.name)
+            os.remove(tmp_wav)
         except Exception as e:
             print(f"[gTTS Error] {e}. Falling back to pyttsx3.")
             fallback_speak(text)
