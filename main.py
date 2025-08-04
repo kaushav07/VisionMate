@@ -25,7 +25,6 @@ model = genai.GenerativeModel(model_name="gemini-1.5-flash")
 llm = ChatGoogleGenerativeAI(
     model="gemini-2.0-flash",
     temperature=0,
-    max_tokens=100,
     timeout=None,
     max_retries=2,
 )
@@ -44,24 +43,48 @@ status = "Press 's' or say 'scan' to scan surroundings..."
 scan_triggered = False
 
 def process_frame(frame):
+    # Convert the OpenCV BGR image to RGB format (PIL expects RGB)
     rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    
+    # Create a PIL image (not directly used but can be useful for debugging or saving)
     pil_image = Image.fromarray(rgb_frame)
+
+    # Encode the frame as PNG image (in memory)
     _, buffer = cv2.imencode('.png', frame)
+
+    # Convert the PNG image bytes to a base64-encoded string (required by Gemini)
     encoded_image = base64.b64encode(buffer).decode('utf-8')
     
     try:
+        # Create a HumanMessage for the Gemini model, combining text and image
         message = HumanMessage(
-        content=[
-            {"type": "text", "text":"Provide a short, clear, and concise description of this scene (1–2 sentences) for a blind person. Focus only on key visual elements or signs like STOP signs, vehicles, people, or traffic lights."},
-            {"type": "image_url", "image_url": f"data:image/png;base64,{encoded_image}"},
-        ]
-    )
-        response = llm.invoke([message])
+            content=[
+                # Text prompt asking for a brief visual description for the blind
+                {
+                    "type": "text",
+                    "text": (
+                        "Provide a short, clear, and concise description of this scene "
+                        "(1–2 sentences) for a blind person. Focus only on key visual elements "
+                        "or signs like STOP signs, vehicles, people, or traffic lights."
+                    )
+                },
+                # Embed the base64 image data as an image input
+                {
+                    "type": "image_url",
+                    "image_url": f"data:image/png;base64,{encoded_image}"
+                },
+            ]
+        )
 
+        # Send the prompt to Gemini model using LangChain wrapper and return the description
+        response = llm.invoke([message])
         return response.content
+
     except Exception as e:
+        # Print error for debugging and return a fallback message
         print(f"[Gemini Error] {e}")
         return "Unable to analyze surroundings due to internet issue."
+
 
 def listen_for_scan():
     global scan_triggered
