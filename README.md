@@ -29,9 +29,23 @@ This is the early development and ideation phase. The repository will include pr
 - **Google Cloud Vision API** – (future integration)  
 - **Text-to-Speech / Speech-to-Text APIs** – Accessibility tools
 
+## Voice & Keyboard Controls
+
+Press s on the keyboard or say "scan" through your microphone to trigger scene analysis.
+
 ## Getting Started
 
 > 🚧 **Work in Progress**: Only starter files and prototypes are included at this stage.
+
+### Prerequisites
+
+Make sure you have the following before running the project:
+
+- **Python 3.10+**
+- **pip** for installing Python packages
+- **Stable Wi-Fi connection** (required for speech recognition and Gemini AI API)
+- **Webcam access** (built-in or external webcam)
+- **Microphone access** (for voice commands)
 
 Clone the repository and install dependencies:
 
@@ -39,3 +53,4 @@ Clone the repository and install dependencies:
 git clone https://github.com/kaushav07/VisionMate.git
 cd VisionMate
 pip install -r requirements.txt
+python main.py
