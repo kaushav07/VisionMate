@@ -2,11 +2,16 @@ import cv2
 import numpy as np
 import threading
 import os
+import base64
 import speech_recognition as sr
 from PIL import Image
 from dotenv import load_dotenv
 import socket
 import google.generativeai as genai
+from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_core.prompts import PromptTemplate
+from langchain_core.messages import HumanMessage
+
 
 from tts_utils import speak
 from config import TTS_ENGINE, IP_WEBCAM_URL
@@ -14,8 +19,16 @@ from config import TTS_ENGINE, IP_WEBCAM_URL
 # Load Gemini API key from .env
 load_dotenv()
 api_key = os.getenv("API_KEY")
+
 genai.configure(api_key=api_key)
 model = genai.GenerativeModel(model_name="gemini-1.5-flash")
+llm = ChatGoogleGenerativeAI(
+    model="gemini-2.0-flash",
+    temperature=0,
+    max_tokens=100,
+    timeout=None,
+    max_retries=2,
+)
 
 def is_connected():
     try:
@@ -33,12 +46,19 @@ scan_triggered = False
 def process_frame(frame):
     rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     pil_image = Image.fromarray(rgb_frame)
+    _, buffer = cv2.imencode('.png', frame)
+    encoded_image = base64.b64encode(buffer).decode('utf-8')
+    
     try:
-        response = model.generate_content([
-            "Provide a short, clear, and concise description of this scene (1–2 sentences) for a blind person. Focus only on key visual elements or signs like STOP signs, vehicles, people, or traffic lights.",
-            pil_image
-        ])
-        return response.text.strip()
+        message = HumanMessage(
+        content=[
+            {"type": "text", "text":"Provide a short, clear, and concise description of this scene (1–2 sentences) for a blind person. Focus only on key visual elements or signs like STOP signs, vehicles, people, or traffic lights."},
+            {"type": "image_url", "image_url": f"data:image/png;base64,{encoded_image}"},
+        ]
+    )
+        response = llm.invoke([message])
+
+        return response.content
     except Exception as e:
         print(f"[Gemini Error] {e}")
         return "Unable to analyze surroundings due to internet issue."
