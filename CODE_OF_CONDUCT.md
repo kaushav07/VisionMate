@@ -20,15 +20,26 @@ We expect all members of the VisionMate community to:
 
 ---
 
+## 🗣️ Feedback Process
+
+We welcome input from all contributors to help improve our community, processes, and codebase.
+
+- 🛠 Share suggestions through GitHub discussions, issues, or pull requests  
+- 🧩 Be open to differing viewpoints and respectful debate  
+- ✅ Encourage reviews that are kind, specific, and constructive  
+- 📝 Feedback will be considered carefully by maintainers and incorporated when appropriate
+
+---
+
 ## 🚫 Unacceptable Behavior
 
 To ensure a supportive space, the following will **not** be tolerated:
 
-- ❌ Harassment, discrimination, or hate speech
-- ❌ Personal attacks, threats, or derogatory comments
-- ❌ Sexualized or inappropriate content or language
-- ❌ Spamming, trolling, or sustained disruption
-- ❌ Sharing private information without explicit consent
+- ❌ Harassment, discrimination, or hate speech  
+- ❌ Personal attacks, threats, or derogatory comments  
+- ❌ Sexualized or inappropriate content or language  
+- ❌ Spamming, trolling, or sustained disruption  
+- ❌ Sharing private information without explicit consent  
 
 ---
 
@@ -37,7 +48,7 @@ To ensure a supportive space, the following will **not** be tolerated:
 If you witness or experience any behavior that violates this Code of Conduct:  
 **Report it immediately.**  
 
-All reports will be handled **discreetly and respectfully** by the project maintainers.  
+All reports will be handled **discreetly and respectfully** by the project maintainers.
 
 ---
 
@@ -51,24 +62,27 @@ Violations of this Code of Conduct may result in:
 | 🟡 Temporary Ban   | Temporary removal from participation in discussions or contributions      |
 | 🔴 Permanent Ban   | Full removal from the project and blocking of further contributions       |
 
+### 🧾 Accountability
+
+- Repeated or severe violations may lead to stricter consequences, including permanent bans  
+- Maintainers reserve the right to evaluate each case on a situational basis  
+- Appeals may be discussed with the core maintainer team if needed  
+
 ---
 
 ## 👥 Scope
 
 This Code of Conduct applies to:
 
-- All VisionMate GitHub repositories (issues, pull requests, discussions)
-- Community communication platforms (e.g., chats, forums)
-- Public or private conversations related to the project
-- Any events, meetings, or collaborative spaces
+- All VisionMate GitHub repositories (issues, pull requests, discussions)  
+- Community communication platforms (e.g., chats, forums)  
+- Public or private conversations related to the project  
+- Any events, meetings, or collaborative spaces  
 
 ---
 
 ## 📝 Attribution
 
 This Code of Conduct is adapted from the [Contributor Covenant](https://www.contributor-covenant.org/version/2/1/code_of_conduct.html), version 2.1.
-
----
-
 Thank you for helping make **VisionMate** a safe, accessible, and inclusive space for everyone. 💙  
 Let’s build a world where technology supports **everyone’s independence.**
