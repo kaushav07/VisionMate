@@ -20,6 +20,8 @@ from config import TTS_ENGINE, IP_WEBCAM_URL
 # Load Gemini API key from .env
 load_dotenv()
 api_key = os.getenv("API_KEY")
+os.environ["GOOGLE_API_KEY"] = "your api key"
+
 genai.configure(api_key=api_key)
 llm = ChatGoogleGenerativeAI(
     model="gemini-2.0-flash",
