@@ -2,19 +2,14 @@ import insightface
 import numpy as np
 import cv2
 from app.shared.paths import get_user_dirs
-from ..shared.config import (
-    MODEL_NAME, 
-    MODEL_PROVIDERS, 
-    FACE_MATCH_THRESHOLD
-)
-
-from ..shared.utils import (
+from app.shared.load_model import load_face_model
+from app.shared.utils import (
     cosine_similarity,
 )
 
 # Global model instance
-model = insightface.app.FaceAnalysis(name=MODEL_NAME, providers=MODEL_PROVIDERS)
-model.prepare(ctx_id=0)
+model = load_face_model()
+FACE_MATCH_THRESHOLD = 0.6
 
 def detect_faces(image: np.ndarray) -> list[dict]:
     """Returns list of (embedding, bbox, landmarks) for all detected faces."""

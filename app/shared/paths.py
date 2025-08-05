@@ -4,8 +4,8 @@ This module defines paths and utility functions for managing user directories in
 """
 
 from pathlib import Path
-from app.main import BASE_DIR
 
+BASE_DIR = Path(__file__).resolve().parent.parent
 DATA_DIR = BASE_DIR / "data"
 USERS_DIR = DATA_DIR / "users"
 

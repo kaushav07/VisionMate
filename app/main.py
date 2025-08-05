@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 import os
-
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
+from pathlib import Path
+from app.shared.load_model import load_face_model
 
 # app = FastAPI()
