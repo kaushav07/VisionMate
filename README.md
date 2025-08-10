@@ -39,3 +39,9 @@ Clone the repository and install dependencies:
 git clone https://github.com/kaushav07/VisionMate.git
 cd VisionMate
 pip install -r requirements.txt
+```
+
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE).
+
