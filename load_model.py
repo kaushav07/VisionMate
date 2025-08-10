@@ -3,13 +3,12 @@ import zipfile
 import requests
 from pathlib import Path
 from insightface.app import FaceAnalysis
-from app.shared.paths import BASE_DIR
 
 # Model config
 FACE_MODEL_NAME = "buffalo_l"
 FACE_MODEL_PROVIDERS = ["CPUExecutionProvider"]
 FACE_MODEL_URL = f"https://github.com/deepinsight/insightface/releases/download/v0.7/{FACE_MODEL_NAME}.zip"
-FACE_MODEL_DIR = BASE_DIR / "models" / FACE_MODEL_NAME
+FACE_MODEL_DIR = Path(os.getcwd()) / "models" / FACE_MODEL_NAME
 FACE_ZIP_PATH = FACE_MODEL_DIR.parent / f"{FACE_MODEL_NAME}.zip"
 FACE_REQUIRED_FILES = [
     "1k3d68.onnx",

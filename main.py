@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 import socket
 import google.generativeai as genai
 
-from app.services.tts_utils import speak
+from tts_utils import speak
 from config import TTS_ENGINE, IP_WEBCAM_URL
 
 # Load Gemini API key from .env
