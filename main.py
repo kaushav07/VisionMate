@@ -14,7 +14,7 @@ from langchain_core.prompts import PromptTemplate
 from langchain_core.messages import HumanMessage
 
 
-from app.services.tts_utils import speak
+from tts_utils import speak
 from config import TTS_ENGINE, IP_WEBCAM_URL
 
 # Load Gemini API key from .env
