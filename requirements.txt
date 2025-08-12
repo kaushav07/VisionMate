@@ -6,5 +6,8 @@ numpy
 Pillow
 SpeechRecognition
 pyaudio
-playsound
+langchain-google-genai
+langchain-core
+langchain
+playsound==1.2.2
 python-dotenv

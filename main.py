@@ -2,12 +2,16 @@ import cv2
 import numpy as np
 import threading
 import os
+import base64
 import speech_recognition as sr
 from PIL import Image, ImageDraw
 from dotenv import load_dotenv
 import socket
-import google.generativeai as genai
 from typing import Optional, Tuple, Any, Dict
+
+from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_core.prompts import PromptTemplate
+from langchain_core.messages import HumanMessage
 
 from tts_utils import speak
 from config import TTS_ENGINE, IP_WEBCAM_URL
@@ -16,8 +20,15 @@ from scan_logger import log_scan, log_error
 # Load Gemini API key from .env
 load_dotenv()
 api_key = os.getenv("API_KEY")
-genai.configure(api_key=api_key)
-model = genai.GenerativeModel(model_name="gemini-1.5-flash")
+
+# Initialize LangChain with Gemini
+llm = ChatGoogleGenerativeAI(
+    model="gemini-1.5-flash",
+    temperature=0,
+    timeout=None,
+    max_retries=2,
+    google_api_key=api_key
+)
 
 def is_connected() -> bool:
     """Check internet connection status.
@@ -39,27 +50,35 @@ status = "Press 's' or say 'scan' to scan surroundings..."
 scan_triggered = False
 
 def process_frame(frame: np.ndarray) -> Tuple[str, bool]:
-    """Process a single frame to generate a description.
-    
-    Args:
-        frame: Input image frame in BGR format
-        
-    Returns:
-        Tuple[str, bool]: (description, success) - The generated description and success status
-    """
+    """Process a single frame to generate a description."""
     try:
         # Convert frame to RGB for processing
         rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        pil_image = Image.fromarray(rgb_frame)
+        _, buffer = cv2.imencode('.png', frame)
+        encoded_image = base64.b64encode(buffer).decode('utf-8')
         
-        # Generate description using Gemini model
-        response = model.generate_content([
-            "Provide a short, clear, and concise description of this scene (1–2 sentences) for a blind person. "
-            "Focus only on key visual elements or signs like STOP signs, vehicles, people, or traffic lights.",
-            pil_image
-        ])
+        # Create a message with both text and image for Gemini
+        message = HumanMessage(
+            content=[
+                {
+                    "type": "text",
+                    "text": (
+                        "Provide a short, clear, and concise description of this scene "
+                        "(1-2 sentences) for a blind person. Focus on key visual elements "
+                        "like STOP signs, vehicles, people, or traffic lights."
+                    )
+                },
+                {
+                    "type": "image_url",
+                    "image_url": f"data:image/png;base64,{encoded_image}"
+                },
+            ]
+        )
         
-        description = response.text.strip()
+        # Get response from Gemini via LangChain
+        response = llm.invoke([message])
+        description = response.content.strip()
+        
         log_scan(description, "auto_scan")
         return description, True
         
