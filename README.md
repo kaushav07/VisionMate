@@ -83,6 +83,7 @@ With your virtual environment activated, install the required packages:
 pip install -r requirements.txt
 ```
 
+ main
 ### Step 4: Set Up Environment Variables
 
 You need to configure two environment variables before running the project:
@@ -275,3 +276,8 @@ For more help, see the [SpeechRecognition documentation](https://pypi.org/projec
   - Try restarting the app after fixing any issues.
 
 For further help, please open an issue on the project repository or consult the documentation for the relevant libraries.
+=======
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE).
+

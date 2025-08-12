@@ -1,7 +1,13 @@
 opencv-python
 pyttsx3
 google-genai>=1.27.0
+gTTS
+google-generativeai
 numpy
 Pillow
 SpeechRecognition
 pyaudio
+playsound
+python-dotenv
+langchain-google-genai
+langchain-core
