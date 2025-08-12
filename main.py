@@ -10,7 +10,6 @@ import socket
 from typing import Optional, Tuple, Any, Dict
 
 from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain_core.prompts import PromptTemplate
 from langchain_core.messages import HumanMessage
 
 from tts_utils import speak
