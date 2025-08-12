@@ -33,55 +33,183 @@ This is the early development and ideation phase. The repository will include pr
 
 > 🚧 **Work in Progress**: Only starter files and prototypes are included at this stage.
 
-Clone the repository and install dependencies:
+### Prerequisites
+
+Before you begin, make sure you have the following installed:
+- **Python 3.8 or higher** 🐍
+- **Git** for cloning the repository
+- **A microphone** for voice commands
+- **A webcam or phone camera** for video input
+- **Google Gemini API key** (get it from [Google AI Studio](https://makersuite.google.com/app/apikey))
+
+### Step 1: Clone the Repository
 
 ```bash
 git clone https://github.com/kaushav07/VisionMate.git
 cd VisionMate
+```
+
+### Step 2: Set Up Virtual Environment
+
+It's highly recommended to use a virtual environment to avoid dependency conflicts.
+
+#### Windows
+```powershell
+# Create virtual environment
+python -m venv venv
+
+# Activate virtual environment
+venv\Scripts\activate
+
+# Verify activation (you should see (venv) in your prompt)
+```
+
+#### Linux/macOS
+```bash
+# Create virtual environment
+python3 -m venv venv
+
+# Activate virtual environment
+source venv/bin/activate
+
+# Verify activation (you should see (venv) in your prompt)
+```
+
+### Step 3: Install Dependencies
+
+With your virtual environment activated, install the required packages:
+
+```bash
 pip install -r requirements.txt
 ```
 
-### ⚠️ Set Environment Variables
-Before running the app, set your Gemini API key and webcam URL as environment variables:
+### Step 4: Set Up Environment Variables
 
-**On Windows (PowerShell):**
+You need to configure two environment variables before running the project:
+
+#### Option A: Set Environment Variables Temporarily
+
+**Windows (PowerShell):**
 ```powershell
-$env:GEMINI_API_KEY="your-gemini-api-key"
+$env:GEMINI_API_KEY="your-actual-gemini-api-key-here"
 $env:WEBCAM_URL="http://your-phone-ip:8080/video"
-python VisionMate/main.py
 ```
 
-**On Linux/macOS:**
+**Windows (Command Prompt):**
+```cmd
+set GEMINI_API_KEY=your-actual-gemini-api-key-here
+set WEBCAM_URL=http://your-phone-ip:8080/video
+```
+
+**Linux/macOS:**
 ```bash
-export GEMINI_API_KEY="your-gemini-api-key"
+export GEMINI_API_KEY="your-actual-gemini-api-key-here"
 export WEBCAM_URL="http://your-phone-ip:8080/video"
-python VisionMate/main.py
 ```
 
-Replace the values with your actual API key and webcam stream URL.
+#### Option B: Create a .env File (Recommended)
 
-## Creating a Python Virtual Environment
+Create a `.env` file in the project root:
 
-It is recommended to use a virtual environment to manage dependencies and avoid conflicts with system packages.
-
-### Windows
-```powershell
-# Create a virtual environment named .venv
-python -m venv .venv
-# Activate the virtual environment
-.venv\Scripts\activate
-```
-
-### Linux/macOS
 ```bash
-# Create a virtual environment named .venv
-python3 -m venv .venv
-# Activate the virtual environment
+# Create .env file
+touch .env  # Linux/macOS
+# OR
+echo. > .env  # Windows
+```
+
+Add the following content to `.env`:
+```env
+GEMINI_API_KEY=your-actual-gemini-api-key-here
+WEBCAM_URL=http://your-phone-ip:8080/video
+```
+
+> ⚠️ **Important**: Replace `your-actual-gemini-api-key-here` with your real Gemini API key and `your-phone-ip` with your device's IP address.
+
+### Step 5: Set Up Webcam Stream
+
+For the webcam URL, you have several options:
+
+1. **Use your phone as a webcam** (recommended):
+   - Install an IP camera app like "IP Webcam" (Android) or "EpocCam" (iOS)
+   - Connect your phone to the same WiFi network as your computer
+   - Start the camera stream and note the URL (usually `http://phone-ip:8080/video`)
+
+2. **Use your computer's built-in webcam**:
+   - Set `WEBCAM_URL=0` (for default camera)
+   - Or set `WEBCAM_URL=1` (for external camera)
+
+3. **Use a USB webcam**:
+   - Connect your webcam and set `WEBCAM_URL=0`
+
+### Step 6: Run the Project
+
+With everything set up, you can now run VisionMate:
+
+```bash
+python main.py
+```
+
+The application will:
+- 🎥 Initialize the camera stream
+- 🎤 Set up microphone for voice commands
+- 🤖 Connect to Google Gemini AI
+- 🔊 Start listening for voice commands
+
+**Voice Commands:**
+- Say "scan" to analyze the current scene
+- The AI will describe what it sees and speak the description aloud
+
+### Quick Start Summary
+
+Here's the complete setup in one go:
+
+```bash
+# Clone and setup
+git clone https://github.com/kaushav07/VisionMate.git
+cd VisionMate
+python -m venv venv
+venv\Scripts\activate  # Windows
+# OR source venv/bin/activate  # Linux/macOS
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Set environment variables
+$env:GEMINI_API_KEY="your-key"  # Windows PowerShell
+$env:WEBCAM_URL="http://your-phone-ip:8080/video"
+
+# Run the project
+python main.py
+```
+
+## Environment Setup (Alternative)
+
+If you prefer a different approach to setting up the environment, here are additional options:
+
+### Using .venv instead of venv
+Some developers prefer using `.venv` as the virtual environment name:
+
+```bash
+# Create virtual environment
+python -m venv .venv
+
+# Activate (Windows)
+.venv\Scripts\activate
+
+# Activate (Linux/macOS)
 source .venv/bin/activate
 ```
 
-Once activated, install the requirements:
+### Using conda (if you prefer Anaconda)
 ```bash
+# Create conda environment
+conda create -n visionmate python=3.8
+
+# Activate environment
+conda activate visionmate
+
+# Install requirements
 pip install -r requirements.txt
 ```
 
