@@ -8,3 +8,5 @@ SpeechRecognition
 pyaudio
 playsound
 python-dotenv
+langchain-google-genai
+langchain-core
