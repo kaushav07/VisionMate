@@ -20,7 +20,18 @@ from config import TTS_ENGINE, IP_WEBCAM_URL
 # Load Gemini API key from .env
 load_dotenv()
 api_key = os.getenv("API_KEY")
+
+
+genai.configure(api_key=api_key)
+model = genai.GenerativeModel(model_name="gemini-1.5-flash")
+llm = ChatGoogleGenerativeAI(
+    model="gemini-2.0-flash",
+    temperature=0,
+    timeout=None,
+    max_retries=2,
+)
 os.environ["GOOGLE_API_KEY"] = "your api key"
+
 
 genai.configure(api_key=api_key)
 llm = ChatGoogleGenerativeAI(
@@ -44,13 +55,25 @@ scan_triggered = False
 
 def process_frame(frame):
 
+    # Convert the OpenCV BGR image to RGB format (PIL expects RGB)
+    rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    
+    # Create a PIL image (not directly used but can be useful for debugging or saving)
     rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     # Encode the frame as PNG image (in memory)
     _, buffer = cv2.imencode('.png', frame)
 
     # Convert the PNG image bytes to a base64-encoded string (required by Gemini)
     encoded_image = base64.b64encode(buffer).decode('utf-8')
+
     pil_image = Image.fromarray(rgb_frame)
+
+    # Encode the frame as PNG image (in memory)
+    _, buffer = cv2.imencode('.png', frame)
+
+    # Convert the PNG image bytes to a base64-encoded string (required by Gemini)
+    encoded_image = base64.b64encode(buffer).decode('utf-8')
+    
     try:
         # Create a HumanMessage for the Gemini model, combining text and image
         message = HumanMessage(
@@ -71,6 +94,7 @@ def process_frame(frame):
                 },
             ]
         )
+
         # Send the prompt to Gemini model using LangChain wrapper and return the description
         response = llm.invoke([message])
         return response.content
