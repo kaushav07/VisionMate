@@ -1,0 +1,70 @@
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Virtual environment
+.venv/
+venv/
+env/
+ENV/
+visionmate/
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# Model downloads & cache
+app/models/
+*.onnx
+*.pth
+*.pb
+*.tflite
+
+# Temporary files
+*.log
+*.tmp
+*.bak
+*.swp
+*.DS_Store
+Thumbs.db
+
+# Jupyter/IPython
+.ipynb_checkpoints
+
+# Environment variables
+.env
+.env.*
+
+# VSCode/IDE
+.vscode/
+.idea/
+
+# macOS
+.DS_Store
+
+# Windows
+*.lnk
+desktop.ini
