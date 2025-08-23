@@ -11,8 +11,8 @@ from face_utils import (
     face_recog,
 )
 
-APP_PATH=pathlib.Path(__file__).parent.parent
-
+APP_PATH=pathlib.Path(__file__).parent
+print(APP_PATH)
 def test_detect_faces():
     # Test the detect_faces function
     name="Paul"
@@ -41,4 +41,3 @@ def test_face_recog():
     assert match_result[0] is True
     assert match_result[1] == "Paul"
     assert match_result[2] is None
-
