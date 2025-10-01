@@ -57,6 +57,12 @@ Here’s how VisionMate works step-by-step:
    Built so new features and better AI can be added later easily.
 
 
+## Architecture
+
+Here is the system architecture:
+
+![Architecture Diagram](docs/architecture.png)
+
 ## Getting Started
 
 > 🚧 **Work in Progress**: Only starter files and prototypes are included at this stage.
