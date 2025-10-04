@@ -1,5 +1,6 @@
 opencv-python
 pyttsx3
+google-genai>=1.27.0
 gTTS
 google-generativeai
 numpy
