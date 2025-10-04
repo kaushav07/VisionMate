@@ -1,3 +1,4 @@
+# Existing dependencies
 opencv-python
 pyttsx3
 gTTS
@@ -10,4 +11,7 @@ playsound
 python-dotenv
 langchain-google-genai
 langchain-core
+
+# Add InsightFace
 insightface
+pytesseract

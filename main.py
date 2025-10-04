@@ -13,9 +13,10 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import PromptTemplate
 from langchain_core.messages import HumanMessage
 
-
 from tts_utils import speak
 from config import TTS_ENGINE, IP_WEBCAM_URL
+
+from ocr_utils import extract_text_from_image
 
 # Load Gemini API key from .env
 load_dotenv()
@@ -145,10 +146,18 @@ while True:
         scan_triggered = False
         status = "Analyzing surroundings..."
         speak("Analyzing surroundings")
+        
+        # ✅ Gemini AI description
         desc = process_frame(frame)
         speak(desc)
 
+         # ✅ OCR text detection
+        text = extract_text_from_image(frame)
+        if text.strip():
+            speak(f"Detected text: {text}")
+
         # Alert on specific signs
+        lower_desc = desc.lower()
         if "stop sign" in desc.lower() or "stop" in desc.lower():
             speak("Stop! There's a stop sign.")
         elif "red light" in desc.lower():
